@@ -18,7 +18,7 @@
         // accessing image temp (temporary) name
         $user_image_tmp=$_FILES['user_image']['tmp_name'];
 
-        // getting ip address
+        
         $user_ip = getIPAddress();
         
         // checking empty condition

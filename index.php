@@ -23,6 +23,12 @@
         <!-- css file  -->
         <link rel="stylesheet" href="style.css">
 
+        <style>
+            body{
+                overflow-x: hidden;
+            }
+        </style>
+
     </head>
     <body>
         <!-- navbar -->
@@ -50,9 +56,19 @@
                                     <li><a class="dropdown-item" href="#">Contact Lens</a></li>
                                 </ul>
                             </li> -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="./users_area/user_registration.php">Register</a>
-                            </li>
+                            <?php
+                                if(isset($_SESSION['username'])){
+                                    echo "<li class='nav-item'>
+                                            <a class='nav-link' href='./users_area/profile.php'>Manage Account</a>
+                                        </li>";  
+                                }
+                                else{
+                                    echo "<li class='nav-item'>
+                                        <a class='nav-link' href='./users_area/user_registration.php'>Register</a>
+                                    </li>";
+                                }
+                            ?> 
+                            
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Contact</a>
                             </li>

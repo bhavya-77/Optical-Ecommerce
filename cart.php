@@ -51,9 +51,18 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="display_all.php">Products</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="./users_area/user_registration.php">Register</a>
-                            </li>
+                            <?php
+                                if(isset($_SESSION['username'])){
+                                    echo "<li class='nav-item'>
+                                            <a class='nav-link' href='./users_area/profile.php'>Manage Account</a>
+                                        </li>";  
+                                }
+                                else{
+                                    echo "<li class='nav-item'>
+                                        <a class='nav-link' href='./users_area/user_registration.php'>Register</a>
+                                    </li>";
+                                }
+                            ?> 
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Contact</a>
                             </li>
@@ -131,7 +140,7 @@
             <div class="container">
                 <div class="row">
                     <form action="" method="post">
-                        <table class="table table-bordered text-center">
+                        <table class="table table-bordered text-center mt-5">
                             
                                 <!-- php code to display dynamic data -->
                                 <?php

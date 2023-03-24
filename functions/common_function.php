@@ -387,4 +387,33 @@
         }
         echo $total_price;
     }
+
+    //get user details
+    function get_user_order_details(){
+        global $con;
+        $username=$_SESSION['username'];
+
+        $get_details="select * from user_details where username='$username'";
+        $result_details=mysqli_query($con,$get_details);
+        while($row_query=mysqli_fetch_array($result_details)){
+            $user_id=$row_query['user_id'];
+            if(!isset($_GET['edit_account'])){
+                if(!isset($_GET['my_orders'])){
+                    if(!isset($_GET['delete_account'])){
+                        $get_orders="select * from user_orders where user_id=$user_id and order_status='Pending'";
+                        $result_orders=mysqli_query($con,$get_orders);
+                        $row_count=mysqli_num_rows($result_orders);
+                        if($row_count>0){
+                            echo "<h3 class='text-center mt-5 mb-3'>You have <span class='text-danger'>$row_count</span> pending orders.</h3>
+                            <p class='text-center'><a href='profile.php?my_orders' class='btn btn-info py-2 px-3' style='background: #ff523b; color: #fff;'>Order Details</a></p>";
+                        }
+                        else{
+                            echo "<h3 class='text-center mt-5 mb-3'>You have no pending orders.</h3>
+                            <p class='text-center'><a href='../index.php' class='btn btn-info py-2 px-3' style='background: #ff523b; color: #fff;'>Explore Products</a></p>";
+                        }
+                    }
+                }
+            }
+        }
+    }
 ?>

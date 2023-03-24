@@ -47,7 +47,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>Insert Products - Admin</title>
+        <title>Admin - Insert Products</title>
 
         <!-- bootstrap CSS link -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -84,6 +84,7 @@
 
                 <!-- categories -->
                 <div class="form-outline mb-4 w-50 m-auto">
+                    <label for="product_categories" class="form-label">Product Category</label>
                     <select name="product_categories" id="" class="form-select">
                         <option value="">Select A Category</option>
                         <?php
@@ -103,6 +104,7 @@
 
                 <!-- brands -->
                 <div class="form-outline mb-4 w-50 m-auto">
+                    <label for="product_brands" class="form-label">Product Brand</label>
                     <select name="product_brands" id="" class="form-select">
                         <option value="">Select A Brand</option>
                         <?php
@@ -145,7 +147,7 @@
                 </div>
 
                 <!-- submit -->
-                <div class="form-outline mb-4 w-50 m-auto">
+                <div class="form-outline mb-4 w-50 m-auto text-center">
                     <input type="submit" name="insert_product" class="btn btn-info mb-3 px-3" style="background: #ff9966; color: #000;" value="Insert Product">
                 </div>
 

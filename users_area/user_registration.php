@@ -18,7 +18,7 @@
         // accessing image temp (temporary) name
         $user_image_tmp=$_FILES['user_image']['tmp_name'];
 
-        
+        // getting ip address
         $user_ip = getIPAddress();
         
         // checking empty condition
@@ -27,19 +27,71 @@
             exit();
         }
         else{
-            // select query
+            // input validation
+            if(!preg_match('/^[a-zA-Z0-9_]+$/', $user_username)){
+                echo "<script>alert('Username can only contain letters, numbers, and underscores.')</script>";
+                echo "<script>window.open('user_registration.php','_self')</script>";
+                exit();
+            }
+
+            if(!filter_var($user_email, FILTER_VALIDATE_EMAIL)){
+                echo "<script>alert('Invalid email format.')</script>";
+                echo "<script>window.open('user_registration.php','_self')</script>";
+                exit();
+            }
+
+            if(!preg_match('/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/', $user_password)){
+                echo "<script>alert('Password must be at least 8 characters long and should contain at least one letter and one number.')</script>";
+                echo "<script>window.open('user_registration.php','_self')</script>";
+                exit();
+            }
+
+            if($user_password != $confirm_user_password){
+                echo "<script>alert('Passwords do not match.')</script>";
+                echo "<script>window.open('user_registration.php','_self')</script>";
+                exit();
+            }
+
+            if(!preg_match('/^[a-zA-Z0-9\s,\'-]*$/', $user_address)){
+                echo "<script>alert('Address can only contain letters, numbers, spaces, commas, apostrophes, and hyphens.')</script>";
+                echo "<script>window.open('user_registration.php','_self')</script>";
+                exit();
+            }
+
+            if(!preg_match('/^[0-9]{10}$/', $user_mobile)){
+                echo "<script>alert('Invalid mobile number format.')</script>";
+                echo "<script>window.open('user_registration.php','_self')</script>";
+                exit();
+            }
+
             $select_query="select * from user_details where username='$user_username' or user_email='$user_email'";
             $result_select=mysqli_query($con,$select_query);
             $rows_count=mysqli_num_rows($result_select);
             if($rows_count>0){
                 echo "<script>alert('Username or Email already exists.')</script>";
-            }
-
-            elseif($user_password!=$confirm_user_password){
-                echo "<script>alert('Passwords do not match.')</script>";
+                echo "<script>window.open('user_registration.php','_self')</script>";
             }
 
             else{
+
+                // if(!is_array($user_image) || !isset($user_image['name'])){
+                //     echo "<script>alert('Invalid image file. Please upload a valid JPG file under 5MB.')</script>";
+                //     exit();
+                // }
+
+                // validate image type
+                // $imageFileType = strtolower(pathinfo($user_image['name'],PATHINFO_EXTENSION));
+                // if($imageFileType != "jpg"){
+                //     echo "<script>alert('Only JPG images are allowed.')</script>";
+                //     echo "<script>window.open('user_registration.php','_self')</script>";
+                // }
+
+                // validate image size
+                // if ($user_image['size'] > 5000000) {
+                //     echo "<script>alert('Sorry, your file is too large. Only files with a size of 5MB or less are allowed.')</script>";
+                //     echo "<script>window.open('user_registration.php','_self')</script>";
+                // }
+                
                 move_uploaded_file($user_image_tmp,"./user_images/$user_image");
 
                 // insert query
@@ -83,75 +135,68 @@
         <!-- font awesome link -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
-<body>
+    <body>
     
-    <div class="container-fluid my-3">
+        <div class="container-fluid my-3">
 
-        <h1 class="text-center">New User Registration</h1>
-        <div class="row d-flex align-items-center justify-content-center">
-            <div class="col-lg-12 col-xl-6">
-            <form action="" method="post" enctype="multipart/form-data">
+            <h1 class="text-center">New User Registration</h1>
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="col-lg-12 col-xl-6">
+                <form action="" method="post" enctype="multipart/form-data">
 
-                <!-- username -->
-                <div class="form-outline mb-4">
-                    <label for="user_username" class="form-label">Username</label>
-                    <input type="text" name="user_username" id="user_username" class="form-control" placeholder="Enter Your Username" autocomplete="off" required="required">
+                    <!-- username -->
+                    <div class="form-outline mb-4">
+                        <label for="user_username" class="form-label">Username</label>
+                        <input type="text" name="user_username" id="user_username" class="form-control" placeholder="Enter Your Username" autocomplete="off" required="required">
+                    </div>
+
+                    <!-- email -->
+                    <div class="form-outline mb-4">
+                        <label for="user_email" class="form-label">Email</label>
+                        <input type="text" name="user_email" id="user_email" class="form-control" placeholder="Enter Your Email-ID" autocomplete="off" required="required">
+                    </div>
+
+                    <!-- image -->
+                    <div class="form-outline mb-4">
+                        <label for="user_image" class="form-label">Image</label>
+                        <input type="file" name="user_image" id="user_image" class="form-control" required="required">
+                    </div>
+
+                    <!-- password -->
+                    <div class="form-outline mb-4">
+                        <label for="user_password" class="form-label">Password</label>
+                        <input type="password" name="user_password" id="user_password" class="form-control" placeholder="Enter Your Password" autocomplete="off" required="required">
+                    </div>
+
+                    <!-- confirm password -->
+                    <div class="form-outline mb-4">
+                        <label for="confirm_user_password" class="form-label">Confirm Password</label>
+                        <input type="password" name="confirm_user_password" id="confirm_user_password" class="form-control" placeholder="Confirm Your Password" autocomplete="off" required="required">
+                    </div>
+
+                    <!-- address -->
+                    <div class="form-outline mb-4">
+                        <label for="user_address" class="form-label">Address</label>
+                        <input type="text" name="user_address" id="user_address" class="form-control" placeholder="Enter Your Address" autocomplete="off" required="required">
+                    </div>
+
+                    <!-- mobile -->
+                    <div class="form-outline mb-4">
+                        <label for="user_mobile" class="form-label">Mobile Number</label>
+                        <input type="text" name="user_mobile" id="user_mobile" class="form-control" placeholder="Enter Your Mobile Number" autocomplete="off" required="required">
+                    </div>
+
+                    <!-- submit -->
+                    <div class="text-center">
+                        <input type="submit" name="user_register" class="btn btn-info mb-3 px-3" style="background: #ff9966; color: #000;" value="Register">
+                        <p class="small fw-bold mt-2 pt-1 mb-0">Already have an Account ? <a href="user_login.php" class="text-danger">Login</a></p>
+                    </div>
+
+                    </form>
                 </div>
-
-                <!-- email -->
-                <div class="form-outline mb-4">
-                    <label for="user_email" class="form-label">Email</label>
-                    <input type="text" name="user_email" id="user_email" class="form-control" placeholder="Enter Your Email-ID" autocomplete="off" required="required">
-                </div>
-
-                <!-- image -->
-                <div class="form-outline mb-4">
-                    <label for="user_image" class="form-label">Image</label>
-                    <input type="file" name="user_image" id="user_image" class="form-control" required="required">
-                </div>
-
-                <!-- password -->
-                <div class="form-outline mb-4">
-                    <label for="user_password" class="form-label">Password</label>
-                    <input type="password" name="user_password" id="user_password" class="form-control" placeholder="Enter Your Password" autocomplete="off" required="required">
-                </div>
-
-                <!-- confirm password -->
-                <div class="form-outline mb-4">
-                    <label for="confirm_user_password" class="form-label">Confirm Password</label>
-                    <input type="password" name="confirm_user_password" id="confirm_user_password" class="form-control" placeholder="Confirm Your Password" autocomplete="off" required="required">
-                </div>
-
-                <!-- address -->
-                <div class="form-outline mb-4">
-                    <label for="user_address" class="form-label">Address</label>
-                    <input type="text" name="user_address" id="user_address" class="form-control" placeholder="Enter Your Address" autocomplete="off" required="required">
-                </div>
-
-                <!-- mobile -->
-                <div class="form-outline mb-4">
-                    <label for="user_mobile" class="form-label">Mobile Number</label>
-                    <input type="text" name="user_mobile" id="user_mobile" class="form-control" placeholder="Enter Your Mobile Number" autocomplete="off" required="required">
-                </div>
-
-                <!-- submit -->
-                <div class="text-center">
-                    <input type="submit" name="user_register" class="btn btn-info mb-3 px-3" style="background: #ff9966; color: #000;" value="Register">
-                    <p class="small fw-bold mt-2 pt-1 mb-0">Already have an Account ? <a href="user_login.php" class="text-danger">Login</a></p>
-                </div>
-
-                </form>
             </div>
+            
         </div>
-        
-    </div>
-    
-</body>
+
+    </body>
 </html>
-<!-- Generate a list of input validation for mobile number input field
-Generate a list of input validation for user address input field
-Generate a list of input validation for username input field 4
-Generate a list of input validation for password input field
-Generate a list of input validation for confirm password input field
-Generate a list of input validation for image input field
-Generate a list of input validation for email id input field -->

@@ -32,6 +32,12 @@
                 display: block;
                 object-fit: contain;
             }
+
+            .edit_img{
+                width: 70px;
+                height: 70px;
+                object-fit: contain;
+            }
         </style>
 
     </head>
@@ -48,23 +54,23 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="../index.php">Home</a>
+                                <a class="nav-link" href="../index.php">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="../display_all.php">Products</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="user_registration.php">Register</a>
+                                <a class="nav-link active" aria-current="page"  href="profile.php">Manage Account</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Contact</a>
                             </li>
                         </ul>
 
-                        <form class="d-flex mx-auto" role="search" action="../search_product.php" method="get">
+                        <!-- <form class="d-flex mx-auto" role="search" action="../search_product.php" method="get">
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_data" style="width: 400px; font-size: 16px;">
                             <input type="submit" name="search_data_product" class="btn btn-outline-success" value="Search">
-                        </form>
+                        </form> -->
 
                         <div style="margin-right: 0;">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-auto">
@@ -104,12 +110,12 @@
 
                         if(!isset($_SESSION['username'])){
                             echo "<li class='nav-item'>
-                                    <a class='nav-link' href='./users_area/user_login.php'>Login</a>
+                                    <a class='nav-link' href='user_login.php'>Login</a>
                                 </li>";
                         }
                         else{
                             echo "<li class='nav-item'>
-                                    <a class='nav-link' href='./users_area/user_logout.php'>Logout</a>
+                                    <a class='nav-link' href='user_logout.php'>Logout</a>
                                 </li>";
                         }
                     ?>
@@ -172,8 +178,22 @@
 
                 </div>
 
-                <div class="col-md-10">
-                    
+                <div class="col-md-10 text-center">
+                    <?php
+                        get_user_order_details();
+
+                        if(isset($_GET['edit_account'])){
+                            include('edit_account.php');
+                        }
+
+                        if(isset($_GET['my_orders'])){
+                            include('user_orders.php');
+                        }
+
+                        if(isset($_GET['delete_account'])){
+                            include('delete_account.php');
+                        }
+                    ?>
                 </div>
 
             </div>            
